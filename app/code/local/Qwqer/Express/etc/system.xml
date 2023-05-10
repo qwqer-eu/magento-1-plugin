@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <carriers translate="label" module="shipping">
+            <groups>
+                <qwqer_express translate="label">
+                    <label>QWQER Express Carrier</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <name translate="label">
+                            <label>Method Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </name>
+                        <category translate="label">
+                            <label>Order Category</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>3</sort_order>
+                            <source_model>qwqer_express/system_config_source_category</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </category>
+                        <api_bearer_token translate="label">
+                            <label>Api Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_bearer_token>
+                        <auth_endpoint translate="label">
+                            <label>Api Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </auth_endpoint>
+                        <trading_point_id translate="label">
+                            <label>Trading point id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </trading_point_id>
+                        <store_address translate="label">
+                            <label>Store Address</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>qwqer_express/adminhtml_system_config_form_text</frontend_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </store_address>
+                        <geo_store translate="label">
+                            <label>Store Geo Locations</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </geo_store>
+                        <shipping_cost translate="label">
+                            <label>Default Shipping Cost</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </shipping_cost>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sort_order>
+                        <sallowspecific translate="label">
+                            <label>Ship to Applicable Countries</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <frontend_class>shipping-applicable-country</frontend_class>
+                            <source_model>adminhtml/system_config_source_shipping_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sallowspecific>
+                        <specificcountry translate="label">
+                            <label>Ship to Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>91</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+                    </fields>
+                </qwqer_express>
+            </groups>
+        </carriers>
+    </sections>
+</config>

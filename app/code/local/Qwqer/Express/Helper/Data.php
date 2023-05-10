@@ -1,0 +1,181 @@
+<?php
+
+class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
+{
+    /** GENERAL */
+    public const API_IS_ENABLED = 'carriers/qwqer_express/active';
+    public const API_BEARER_TOKEN = 'carriers/qwqer_express/api_bearer_token';
+    public const API_BASE_URL_PATH = 'carriers/qwqer_express/auth_endpoint';
+    public const API_TRANDING_POINT_ID = 'carriers/qwqer_express/trading_point_id';
+    public const API_STORE_ADDRESS = 'carriers/qwqer_express/store_address';
+    public const API_STORE_ADDRESS_LOCATION = 'carriers/qwqer_express/geo_store';
+    public const API_CATEGORY = 'carriers/qwqer_express/category';
+    public const API_AUTOCOMPLETE_URL = '/v1/places/autocomplete';
+    public const API_GEOCODE_URL = '/v1/places/geocode';
+    public const API_ORDER_PRICE_URL
+        = '/v1/plugins/magento/clients/auth/trading-points/{trading-point-id}/delivery-orders/get-price';
+    public const API_ORDER_CREATE_URL
+        = '/v1/plugins/magento/clients/auth/trading-points/{trading-point-id}/delivery-orders';
+    public const API_ORDER_LIST_URL
+        = '/v1/plugins/magento/clients/auth/trading-points/{trading-point-id}/delivery-orders';
+    public const API_ORDER_DETAILS_URL = '/v1/plugins/magento/delivery-orders/{order-id}';
+
+    public const DELIVERY_ORDER_TYPES = "Regular";
+    public const DELIVERY_ORDER_REAL_TYPE = "ScheduledDelivery";
+
+    /**
+     * Get is API integration enabled
+     *
+     * @param $storeId
+     * @return bool
+     */
+    public function getIsQwqerEnabled($storeId = null): bool
+    {
+        return Mage::getStoreConfigFlag(
+            self::API_IS_ENABLED,
+            $storeId
+        );
+    }
+
+    /**
+     * Get is API base url
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getAPIBaseUrl($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::API_BASE_URL_PATH,
+            $storeId
+        );
+    }
+
+    /**
+     * Get API bearer token
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getApiBearerToken($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::API_BEARER_TOKEN,
+            $storeId
+        );
+    }
+
+    /**
+     * Get API API_TRANDING_POINT_ID
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getTrandingPointId($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::API_TRANDING_POINT_ID,
+            $storeId
+        );
+    }
+
+    /**
+     * Get API category
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getCategory($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::API_CATEGORY,
+            $storeId
+        );
+    }
+
+    /**
+     * Get Store Address
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getStoreAddress($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::API_STORE_ADDRESS,
+            $storeId
+        );
+    }
+
+    /**
+     * Get Store Address Location
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getStoreAddressLocation($storeId = null): array
+    {
+        $configData = Mage::getStoreConfig(
+            self::API_STORE_ADDRESS_LOCATION,
+            $storeId
+        );
+        if (!empty($configData)) {
+            return explode(",", $configData);
+        }
+        return [];
+    }
+
+    /**
+     * GetAutocompleteUrl
+     *
+     * @return string
+     */
+    public function getAutocompleteUrl()
+    {
+        return self::API_AUTOCOMPLETE_URL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeoCodeUrl()
+    {
+        return self::API_GEOCODE_URL;
+    }
+
+    /**
+     * @return array|string|string[]
+     */
+    public function getShippingCost()
+    {
+        return str_replace('{trading-point-id}', $this->getTrandingPointId(), self::API_ORDER_PRICE_URL);
+    }
+
+    /**
+     * @param $params
+     * @return array|string|string[]
+     */
+    public function getOrderPlaceUrl()
+    {
+        return str_replace('{trading-point-id}', $this->getTrandingPointId(), self::API_ORDER_CREATE_URL);
+    }
+
+    /**
+     * GetOrderInfoUrl
+     *
+     * @param $orderId
+     * @return array|string|string[]
+     */
+    public function getOrderInfoUrl($orderId)
+    {
+        return str_replace('{order-id}', $orderId, self::API_ORDER_DETAILS_URL);
+    }
+
+    /**
+     * @return array|string|string[]
+     */
+    public function getOrdersList()
+    {
+        return str_replace('{trading-point-id}', $this->getTrandingPointId(), self::API_ORDER_LIST_URL);
+    }
+}

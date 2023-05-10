@@ -1,0 +1,26 @@
+<!--https://stackoverflow.com/questions/34511667/how-do-i-correctly-implement-jquery-ui-accordion-in-magento-cms-page-->
+<input id="carriers_qwqer_express_store_address"
+       name="groups[qwqer_express][fields][store_address][value]"
+       class="input-text" type="text"
+       value="<?php echo $this->getConfigValue() ?>"
+>
+<div id="autocomplete_choices" class="autocomplete"></div>
+<script type="text/javascript">
+    new Ajax.Autocompleter("carriers_qwqer_express_store_address", "autocomplete_choices", "<?php echo $this->getAjaxUrl() ?>", {
+        paramName: "value",
+        minChars: 2,
+        afterUpdateElement : getSelectionId
+    });
+    function getSelectionId(text, li) {
+        new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {
+            parameters: {location: li.innerText},
+            method: 'GET',
+            loaderArea: false,
+            asynchronous: true,
+            onComplete: function (resp) {
+                document.getElementById('carriers_qwqer_express_geo_store').value = resp.responseText;
+            }
+        });
+    }
+</script>
+
