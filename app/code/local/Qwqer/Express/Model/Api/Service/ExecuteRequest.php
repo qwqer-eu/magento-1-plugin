@@ -28,6 +28,7 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
      * @var array $params Set params of current method of current model
      */
     protected $params;
+    public $parcels;
 
     /**
      * @param $key
@@ -131,7 +132,7 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
      * @return json|mixed
      * @throws Exception
      */
-    private function request($endpoint, $params = NULL) {
+    private function request($endpoint, $params = NULL, $method = "POST") {
         try {
             $post = '';
             if(!empty($params)) {
@@ -147,7 +148,7 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
                 CURLOPT_TIMEOUT => 0,
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_CUSTOMREQUEST => $method,
                 CURLOPT_POSTFIELDS => $post,
                 CURLOPT_HTTPHEADER => array(
                     'Accept: application/json',
@@ -206,6 +207,67 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
     }
 
     /**
+     * Get Qwqer Parcel Machines
+     *
+     * @param $params
+     * @return json|mixed
+     * @throws Exception
+     */
+    function getParcelMachines($params = []) {
+        return $this->request(Mage::helper('qwqer_express')->getParcelMachinesUrl(), $params, "GET");
+    }
+
+    /**
+     * Get Qwqer Parcel Machines
+     *
+     * @param $params
+     * @return json|mixed
+     * @throws Exception
+     */
+    function getParcelMachinesArray($params = []) {
+        if (empty($this->parcels)) {
+            $response = $this->getParcelMachines($params);
+            if(!empty($response['data']['omniva'])) {
+                $this->parcels = $response['data']['omniva'];
+            }
+        }
+        $parcelsArray = [];
+        if (!empty($this->parcels)) {
+            foreach ($this->parcels as $item) {
+                $parcelsArray[] = [
+                    'label' => $item['name'],
+                    'value' => $item['id']
+                ];
+            }
+        }
+        return $parcelsArray;
+
+    }
+
+    /**
+     * Get Qwqer Parcel Machines
+     *
+     * @param $params
+     * @return json|mixed
+     * @throws Exception
+     */
+    function getParcelMachinesWithoutKey($params = []) {
+        if (empty($this->parcels)) {
+            $response = $this->getParcelMachines($params);
+            if(!empty($response['data']['omniva'])) {
+                $this->parcels = $response['data']['omniva'];
+            }
+        }
+        $parcelsArray = [];
+        if (!empty($this->parcels)) {
+            foreach ($this->parcels as $item) {
+                $parcelsArray[] = $item['name'];
+            }
+        }
+        return $parcelsArray;
+    }
+
+    /**
      * Get Qwqer Express Address coordinates
      *
      * @param $params
@@ -224,18 +286,24 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
      * @throws Exception
      */
     function getShippingCost($params = []) {
-
+        $realType = $params['real_type'];
+        unset($params['real_type']);
         $storeOwnerAddress = $params;
         $storeOwnerAddress["address"] = Mage::helper('qwqer_express')->getStoreAddress();
         $storeOwnerAddress["coordinates"] = Mage::helper('qwqer_express')->getStoreAddressLocation();
 
         $bodyArray =  [
             'type' => Qwqer_Express_Helper_Data::DELIVERY_ORDER_TYPES,
-            'real_type' => Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE,
+            'real_type' => $realType,
             'category' => Mage::helper('qwqer_express')->getCategory(),
             'origin' => $storeOwnerAddress,
             'destinations' => [$params],
         ];
+
+        $helper = Mage::helper('qwqer_express');
+        if($realType == Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE_PARCEL) {
+            $bodyArray['parcel_size'] = $helper->getParcelSize();
+        }
 
         return $this->request(Mage::helper('qwqer_express')->getShippingCost(), $bodyArray);
     }
@@ -263,6 +331,11 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
             'incrementId' => $orderId
         ];
 
+        $helper = Mage::helper('qwqer_express');
+        if($order->getData('shipping_method') == "qwqer_parcel") {
+            $originData['parcel_size'] =$helper->getParcelSize();
+        }
+
         $location = Mage::getSingleton('qwqer_express/api_client')->getConnection()->geoCode(
             ['address' => $quote->getQwqerAddress()]
         );
@@ -277,9 +350,14 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
         $storeOwnerAddress["address"] = Mage::helper('qwqer_express')->getStoreAddress();
         $storeOwnerAddress["coordinates"] = Mage::helper('qwqer_express')->getStoreAddressLocation();
 
+        $realType = Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE;
+        $realTypes = Qwqer_Express_Helper_Data::QWQER_REAL_TYPES;
+        if (in_array($order->getData('shipping_method'), $realTypes)) {
+            $realType = $realTypes[$order->getData('shipping_method')];
+        }
         $bodyArray =  [
             'type' => Qwqer_Express_Helper_Data::DELIVERY_ORDER_TYPES,
-            'real_type' => Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE,
+            'real_type' => $realType,
             'category' => Mage::helper('qwqer_express')->getCategory(),
             'origin' => $storeOwnerAddress,
             'delivery_order_id' => $orderId,

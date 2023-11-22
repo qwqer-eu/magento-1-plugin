@@ -14,7 +14,8 @@ class Qwqer_Express_Helper_Address extends Mage_Customer_Helper_Address
 
         $helper = Mage::helper('qwqer_express');
 
-        if($helper->getIsQwqerEnabled() && $attributeCode == 'telephone')  {
+        if(($helper->getIsQwqerEnabled() || $helper->getIsQwqerDoorEnabled() || $helper->getIsQwqerParcelEnabled())
+            && $attributeCode == 'telephone')  {
             $class .= ' validate-phone-lv';
         }
 

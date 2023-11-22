@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Qwqer_Express>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </Qwqer_Express>
     </modules>
     <global>
@@ -22,6 +22,9 @@
             <qwqer_express>
                 <class>Qwqer_Express_Model</class>
             </qwqer_express>
+            <qwqer_express_carrier>
+                <class>Qwqer_Express_Model_Carrier</class>
+            </qwqer_express_carrier>
         </models>
         <helpers>
             <qwqer_express>
@@ -98,7 +101,7 @@
         <carriers>
             <qwqer_express>
                 <active>1</active>
-                <model>qwqer_express/carrier</model>
+                <model>qwqer_express_carrier/express</model>
                 <title>QWQER Express</title>
                 <name>Vakara piegāde (šodien)</name>
                 <category>Other</category>
@@ -111,6 +114,25 @@
                 <sort_order>10</sort_order>
                 <sallowspecific>0</sallowspecific>
             </qwqer_express>
+            <qwqer_door>
+                <active>1</active>
+                <model>qwqer_express_carrier/door</model>
+                <title>QWQER piegāde</title>
+                <name>(ŠODIEN 18:00 - 22:00)</name>
+                <shipping_cost>3</shipping_cost>
+                <sort_order>11</sort_order>
+                <sallowspecific>0</sallowspecific>
+            </qwqer_door>
+            <qwqer_parcel>
+                <active>1</active>
+                <model>qwqer_express_carrier/parcel</model>
+                <title>QWQER piegāde uz Omniva pakomātu</title>
+                <name>(ŠODIEN 18:00 - 22:00)</name>
+                <parcel_size>L</parcel_size>
+                <shipping_cost>3</shipping_cost>
+                <sort_order>12</sort_order>
+                <sallowspecific>0</sallowspecific>
+            </qwqer_parcel>
         </carriers>
     </default>
 </config>

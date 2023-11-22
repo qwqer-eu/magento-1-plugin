@@ -3,6 +3,8 @@
     <default>
         <reference name="head">
             <action method="addJs"><file>qwqer/express.js</file></action>
+            <action method="addJs"><file>qwqer/door.js</file></action>
+            <action method="addJs"><file>qwqer/parcel.js</file></action>
             <action method="addJs"><file>qwqer/trick.js</file></action>
         </reference>
     </default>

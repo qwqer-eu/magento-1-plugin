@@ -4,14 +4,21 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /** GENERAL */
     public const API_IS_ENABLED = 'carriers/qwqer_express/active';
+
+    public const API_IS_ENABLED_DOOR = 'carriers/qwqer_door/active';
+    public const API_IS_ENABLED_PARCEL = 'carriers/qwqer_parcel/active';
     public const API_BEARER_TOKEN = 'carriers/qwqer_express/api_bearer_token';
     public const API_BASE_URL_PATH = 'carriers/qwqer_express/auth_endpoint';
     public const API_TRANDING_POINT_ID = 'carriers/qwqer_express/trading_point_id';
     public const API_STORE_ADDRESS = 'carriers/qwqer_express/store_address';
     public const API_STORE_ADDRESS_LOCATION = 'carriers/qwqer_express/geo_store';
     public const API_CATEGORY = 'carriers/qwqer_express/category';
-    public const API_AUTOCOMPLETE_URL = '/v1/places/autocomplete';
-    public const API_GEOCODE_URL = '/v1/places/geocode';
+
+    public const API_PARCEL_SIZE = 'carriers/qwqer_parcel/parcel_size';
+    public const API_AUTOCOMPLETE_URL = '/v1/plugins/magento/places/autocomplete';
+
+    public const API_PARCEL_MACHINES_URL = '/v1/plugins/magento/parcel-machines';
+    public const API_GEOCODE_URL = '/v1/plugins/magento/places/geocode';
     public const API_ORDER_PRICE_URL
         = '/v1/plugins/magento/clients/auth/trading-points/{trading-point-id}/delivery-orders/get-price';
     public const API_ORDER_CREATE_URL
@@ -21,7 +28,23 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     public const API_ORDER_DETAILS_URL = '/v1/plugins/magento/delivery-orders/{order-id}';
 
     public const DELIVERY_ORDER_TYPES = "Regular";
-    public const DELIVERY_ORDER_REAL_TYPE = "ScheduledDelivery";
+    public const DELIVERY_ORDER_REAL_TYPE = "ExpressDelivery";
+    public const DELIVERY_ORDER_REAL_TYPE_DOOR = "ScheduledDelivery";
+    public const DELIVERY_ORDER_REAL_TYPE_PARCEL = "OmnivaParcelTerminal";
+
+    public const DEFAULT_PRICE_IF_ERROR = 3;
+
+    public const QWQER_METHODS = [
+        'qwqer_express_express',
+        'qwqer_parcel_express',
+        'qwqer_door_express'
+    ];
+
+    public const QWQER_REAL_TYPES = [
+        'qwqer_express_express' => self::DELIVERY_ORDER_REAL_TYPE,
+        'qwqer_door_express' => self::DELIVERY_ORDER_REAL_TYPE_DOOR,
+        'qwqer_parcel_express' => self::DELIVERY_ORDER_REAL_TYPE_PARCEL,
+    ];
 
     /**
      * Get is API integration enabled
@@ -33,6 +56,32 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfigFlag(
             self::API_IS_ENABLED,
+            $storeId
+        );
+    }
+
+    /**
+     * Get is API integration enabled
+     *
+     * @return bool
+     */
+    public function getIsQwqerDoorEnabled($storeId = null): bool
+    {
+        return Mage::getStoreConfigFlag(
+            self::API_IS_ENABLED_DOOR,
+            $storeId
+        );
+    }
+
+    /**
+     * Get is API integration enabled
+     *
+     * @return bool
+     */
+    public function getIsQwqerParcelEnabled($storeId = null): bool
+    {
+        return Mage::getStoreConfigFlag(
+            self::API_IS_ENABLED_PARCEL,
             $storeId
         );
     }
@@ -89,6 +138,20 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfig(
             self::API_CATEGORY,
+            $storeId
+        );
+    }
+
+    /**
+     * Get parcel size
+     *
+     * @param $storeId
+     * @return string
+     */
+    public function getParcelSize($storeId = null): string
+    {
+        return Mage::getStoreConfig(
+            self::API_PARCEL_SIZE,
             $storeId
         );
     }
@@ -177,5 +240,15 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     public function getOrdersList()
     {
         return str_replace('{trading-point-id}', $this->getTrandingPointId(), self::API_ORDER_LIST_URL);
+    }
+
+    /**
+     * Get Parcel Machines Url
+     *
+     * @return string
+     */
+    public function getParcelMachinesUrl(): string
+    {
+        return self::API_PARCEL_MACHINES_URL;
     }
 }
