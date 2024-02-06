@@ -10,7 +10,6 @@
     Download the QWQER Express extension
     Unzip the files
     Move the extension’s unzipped files and folders to your root directory
-    In the command line (using “cd”) navigate to your Magento 2 root directory
 
 Your extension is now installed and accessible from the left navigation menu in your Magento 1 back office: System > Configuration > Sales > Shipping Methods > QWQER Express.
 
