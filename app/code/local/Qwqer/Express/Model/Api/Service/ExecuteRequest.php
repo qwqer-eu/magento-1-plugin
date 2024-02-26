@@ -332,10 +332,6 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
         ];
 
         $helper = Mage::helper('qwqer_express');
-        if($order->getData('shipping_method') == "qwqer_parcel") {
-            $originData['parcel_size'] =$helper->getParcelSize();
-        }
-
         $location = Mage::getSingleton('qwqer_express/api_client')->getConnection()->geoCode(
             ['address' => $quote->getQwqerAddress()]
         );
@@ -352,9 +348,11 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
 
         $realType = Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE;
         $realTypes = Qwqer_Express_Helper_Data::QWQER_REAL_TYPES;
-        if (in_array($order->getData('shipping_method'), $realTypes)) {
+
+        if (isset($realTypes[$order->getData('shipping_method')])) {
             $realType = $realTypes[$order->getData('shipping_method')];
         }
+
         $bodyArray =  [
             'type' => Qwqer_Express_Helper_Data::DELIVERY_ORDER_TYPES,
             'real_type' => $realType,
@@ -363,6 +361,10 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
             'delivery_order_id' => $orderId,
             'destinations' => [$originData],
         ];
+
+        if($order->getData('shipping_method') == "qwqer_parcel_express") {
+            $bodyArray['parcel_size'] = $helper->getParcelSize();
+        }
 
         return $this->request(Mage::helper('qwqer_express')->getOrderPlaceUrl(), $bodyArray);
     }
