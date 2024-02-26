@@ -61,4 +61,31 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
             }
         }
     }
+
+    /**
+     * @param $event
+     * @return void
+     */
+    public function adminhtmlWidgetContainerHtmlBeforeButton($event)
+    {
+        $block = $event->getBlock();
+        if ($block instanceof Mage_Adminhtml_Block_Sales_Order_View) {
+            if($qwqerData = $block->getOrder()->getData('qwqer_data')) {
+                try {
+                    $qwqerDataArray = Mage::helper('core')->jsonDecode($qwqerData);
+                    if(!empty($qwqerDataArray['data']['id'])) {
+                        $url = "https://qwqer.hostcream.eu/storage/delivery-order-covers/" . $qwqerDataArray['data']['id'] . ".pdf";
+                        $blank = "_blank";
+                        $block->addButton('print_label_qwqer', array(
+                            'label' => Mage::helper('qwqer_express')->__('Print Label'),
+                            'onclick' => 'window.open(\'' . $url . '\', \'' . $blank . '\')',
+                            'class' => 'go'
+                        ));
+                    }
+                } catch (\Exception $exception) {
+                    //skip button
+                }
+            }
+        }
+    }
 }

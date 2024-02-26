@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Qwqer_Express>
-            <version>0.0.2</version>
+            <version>0.0.3</version>
         </Qwqer_Express>
     </modules>
     <global>
@@ -96,6 +96,19 @@
             </adminhtml>
         </routers>
     </admin>
+    <adminhtml>
+        <events>
+            <adminhtml_widget_container_html_before>
+                <observers>
+                    <your_module>
+                        <class>qwqer_express/observer</class>
+                        <type>singleton</type>
+                        <method>adminhtmlWidgetContainerHtmlBeforeButton</method>
+                    </your_module>
+                </observers>
+            </adminhtml_widget_container_html_before>
+        </events>
+    </adminhtml>
     <!-- Default configuration -->
     <default>
         <carriers>

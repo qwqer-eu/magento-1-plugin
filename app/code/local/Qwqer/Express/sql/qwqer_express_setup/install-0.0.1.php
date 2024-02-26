@@ -28,7 +28,7 @@ $setup->addAttribute('order', 'qwqer_data', array(
         'group'             => 'General',
         'label'             => 'Qwqer sync data',
         'note'              => '',
-        'type'              => 'varchar',
+        'type'              => 'text',
         'input'             => 'text',
         'frontend_class'    => '',
         'source'            => '',

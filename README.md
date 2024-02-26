@@ -13,6 +13,8 @@
 
 Your extension is now installed and accessible from the left navigation menu in your Magento 1 back office: System > Configuration > Sales > Shipping Methods > QWQER Express.
 
+After successfully placed order, you can print shipping label in admin panel during view order information. Click button Print Label in Toolbar.
+
 ### Main Configurations
 
 #### QWQER Express
