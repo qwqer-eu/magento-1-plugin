@@ -332,6 +332,7 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
         ];
 
         $helper = Mage::helper('qwqer_express');
+
         $location = Mage::getSingleton('qwqer_express/api_client')->getConnection()->geoCode(
             ['address' => $quote->getQwqerAddress()]
         );
@@ -345,6 +346,19 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
 
         $storeOwnerAddress["address"] = Mage::helper('qwqer_express')->getStoreAddress();
         $storeOwnerAddress["coordinates"] = Mage::helper('qwqer_express')->getStoreAddressLocation();
+
+        $storeName = Mage::helper('qwqer_express')->getStoreConfig('general/store_information/name');
+        if(!empty($storeName)) {
+            $storeOwnerAddress['name'] = $storeName;
+        }
+        $storeEmail = Mage::helper('qwqer_express')->getStoreConfig('trans_email/ident_general/email');
+        if(!empty($storeEmail)) {
+            $storeOwnerAddress['email'] = $storeEmail;
+        }
+        $storePhone = Mage::helper('qwqer_express')->getStoreConfig('general/store_information/phone');
+        if(!empty($storePhone)) {
+            $storeOwnerAddress['phone'] = $storePhone;
+        }
 
         $realType = Qwqer_Express_Helper_Data::DELIVERY_ORDER_REAL_TYPE;
         $realTypes = Qwqer_Express_Helper_Data::QWQER_REAL_TYPES;

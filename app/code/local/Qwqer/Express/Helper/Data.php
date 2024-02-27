@@ -251,4 +251,13 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return self::API_PARCEL_MACHINES_URL;
     }
+
+    /**
+     * @param $path
+     * @return void
+     */
+    public function getStoreConfig($path)
+    {
+        Mage::getStoreConfig($path);
+    }
 }

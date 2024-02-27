@@ -17,6 +17,11 @@ After successfully placed order, you can print shipping label in admin panel dur
 
 ### Main Configurations
 
+Need setup store owner information:
+* Stores -> General -> Store Email Addresses -> General Contact -> Sender Email
+* Stores -> General -> Store Information -> Store Name
+* Stores -> General -> Store Information -> Store Phone Number
+
 #### QWQER Express
 
 * Api Key - Get it in QWQER Express support
