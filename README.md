@@ -22,6 +22,9 @@ Need setup store owner information:
 * Stores -> General -> Store Information -> Store Name
 * Stores -> General -> Store Information -> Store Phone Number
 
+QWQER delivery is available for products only:
+- "Available Qwqer Delivery" product attribute value is "Yes"
+
 #### QWQER Express
 
 * Api Key - Get it in QWQER Express support

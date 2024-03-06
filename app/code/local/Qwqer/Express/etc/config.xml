@@ -2,10 +2,19 @@
 <config>
     <modules>
         <Qwqer_Express>
-            <version>0.0.3</version>
+            <version>0.0.5</version>
         </Qwqer_Express>
     </modules>
     <global>
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <is_qwqer_available/>
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
         <fieldsets>
             <sales_convert_quote>
                 <qwqer_address>

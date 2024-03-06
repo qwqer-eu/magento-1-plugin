@@ -34,6 +34,8 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
 
     public const DEFAULT_PRICE_IF_ERROR = 3;
 
+    public const ATTRIBUTE_CODE_AVAILABILITY = 'is_qwqer_available';
+
     public const QWQER_METHODS = [
         'qwqer_express_express',
         'qwqer_parcel_express',

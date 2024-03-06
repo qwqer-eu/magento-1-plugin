@@ -60,4 +60,21 @@ $setup->addAttribute('quote', 'qwqer_address', array(
     )
 );
 
+$setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, Qwqer_Express_Helper_Data::ATTRIBUTE_CODE_AVAILABILITY, array(
+    'group'           => 'General',
+    'label'           => 'Available Qwqer Delivery',
+    'type'            => 'int',
+    'input'           => 'select',
+    'source'          => 'eav/entity_attribute_source_boolean',
+    'global'          => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_WEBSITE,
+    'required'        => 0,
+    'visible_on_front'=> 0,
+    'filterable'      => 0,
+    'searchable'      => 0,
+    'comparable'      => 0,
+    'user_defined'    => 1,
+    'is_configurable' => 0,
+    'note'            => '',
+));
+
 $installer->endSetup();

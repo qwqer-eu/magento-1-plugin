@@ -12,11 +12,34 @@ class Qwqer_Express_Model_Carrier_Parcel extends Mage_Shipping_Model_Carrier_Abs
         Mage_Shipping_Model_Rate_Request $request
     ) {
         $result = Mage::getModel('shipping/rate_result');
-        /* @var $result Mage_Shipping_Model_Rate_Result */
 
+        $available = $this->checkAvailableProduct();
+        if(!$available) {
+            return $result;
+        }
+
+        /* @var $result Mage_Shipping_Model_Rate_Result */
         $result->append($this->_getStandardShippingRate());
 
         return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function checkAvailableProduct()
+    {
+        $cart = Mage::getSingleton('checkout/session')->getQuote();
+        $items = $cart->getAllItems();
+        foreach ($items as $item) {
+            $isAvailable = intval($item->getProduct()->getData(Qwqer_Express_Helper_Data::ATTRIBUTE_CODE_AVAILABILITY));
+            if($isAvailable) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
