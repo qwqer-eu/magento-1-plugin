@@ -62,7 +62,7 @@ $setup->addAttribute('quote', 'qwqer_address', array(
 
 $setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, Qwqer_Express_Helper_Data::ATTRIBUTE_CODE_AVAILABILITY, array(
     'group'           => 'General',
-    'label'           => 'Available Qwqer Delivery',
+    'label'           => 'Available QWQER Delivery',
     'type'            => 'int',
     'input'           => 'select',
     'source'          => 'eav/entity_attribute_source_boolean',
