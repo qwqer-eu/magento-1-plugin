@@ -303,8 +303,6 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
-        $currentDateTime = Mage::getModel('core/date')->date('H:i');
-
         return $isOpen;
     }
 }
