@@ -218,6 +218,17 @@ class Qwqer_Express_Model_Api_Service_ExecuteRequest
     }
 
     /**
+     * Get Trading Point Info
+     *
+     * @param $params
+     * @return json|mixed
+     * @throws Exception
+     */
+    function getTradingPointInfo($params = []) {
+        return $this->request(Mage::helper('qwqer_express')->getTradingPointUrl(), $params, "GET");
+    }
+
+    /**
      * Get Qwqer Parcel Machines
      *
      * @param $params

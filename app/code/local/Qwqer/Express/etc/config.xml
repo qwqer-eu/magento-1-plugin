@@ -74,6 +74,15 @@
                     </set_shipping_method_description_title>
                 </observers>
             </sales_quote_collect_totals_after>
+            <admin_system_config_changed_section_carriers>
+                <observers>
+                    <qwqer_express>
+                        <type>singleton</type>
+                        <class>qwqer_express/observer</class>
+                        <method>saveWorkingHours</method>
+                    </qwqer_express>
+                </observers>
+            </admin_system_config_changed_section_carriers>
         </events>
     </global>
     <frontend>

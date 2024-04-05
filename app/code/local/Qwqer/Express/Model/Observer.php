@@ -88,4 +88,17 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
             }
         }
     }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function saveWorkingHours(Varien_Event_Observer $observer)
+    {
+        $data =  Mage::getSingleton('qwqer_express/api_client')->getConnection()->getTradingPointInfo();
+        var_dump($observer->getEvent()->getData());
+        if(!empty($data['data']['working_hours'])) {
+            Mage::getConfig()->saveConfig(Qwqer_Express_Helper_Data::API_WORKING_HOURS, json_encode($data['data']['working_hours']), 'default', 0);
+        }
+    }
 }

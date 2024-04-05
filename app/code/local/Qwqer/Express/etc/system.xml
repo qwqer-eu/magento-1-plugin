@@ -69,6 +69,14 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </trading_point_id>
+                        <working_hours translate="label">
+                            <label>Working Hours</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </working_hours>
                         <store_address translate="label">
                             <label>Store Address</label>
                             <frontend_type>text</frontend_type>
