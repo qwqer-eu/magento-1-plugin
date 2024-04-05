@@ -33,9 +33,7 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     public const ATTRIBUTE_CODE_AVAILABILITY = 'is_qwqer_available';
     public const API_TRADING_POINT_INFO
         = '/v1/plugins/magento/trading-points/{trading-point-id}?include=working_hours,merchant';
-
     public const API_WORKING_HOURS = 'carriers/qwqer_express/working_hours';
-
     public const QWQER_METHODS = [
         'qwqer_express_express',
         'qwqer_parcel_express',
@@ -269,5 +267,44 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStoreConfig($path)
     {
         Mage::getStoreConfig($path);
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
+    public function checkWorkingHours($storeId)
+    {
+        $workingHoursConfig = Mage::getStoreConfig(
+            self::API_WORKING_HOURS,
+            $storeId
+        );
+        if(!$workingHoursConfig) {
+            return true;
+        }
+        $workingHoursArray = json_decode($workingHoursConfig);
+        if(!is_array($workingHoursArray) || empty($workingHoursArray)) {
+            return true;
+        }
+        $days = ['Sunday','Monday', 'Tuesday', 'Wednesday','Thursday','Friday','Saturday'];
+        $today = date("d") / 1;
+        $dayOfWeek = $days[$today];
+        $isOpen = false;
+        foreach ($workingHoursArray as $workingHour) {
+            if($workingHour->day_of_week == $dayOfWeek) {
+                $startTimeObj = DateTime::createFromFormat('H:i', $workingHour->time_from);
+                $endTimeObj = DateTime::createFromFormat('H:i', $workingHour->time_to);
+                $currentTime = Mage::getModel('core/date')->date('H:i');
+                $currentTimeObj = DateTime::createFromFormat('H:i', $currentTime);
+
+                if ($currentTimeObj >= $startTimeObj && $currentTimeObj <= $endTimeObj) {
+                    $isOpen = true;
+                    break;
+                }
+            }
+        }
+        $currentDateTime = Mage::getModel('core/date')->date('H:i');
+
+        return $isOpen;
     }
 }

@@ -18,10 +18,25 @@ class Qwqer_Express_Model_Carrier_Parcel extends Mage_Shipping_Model_Carrier_Abs
             return $result;
         }
 
+        $available = $this->checkWorkingHours();
+        if(!$available) {
+            return $result;
+        }
+
         /* @var $result Mage_Shipping_Model_Rate_Result */
         $result->append($this->_getStandardShippingRate());
 
         return $result;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function checkWorkingHours()
+    {
+        $cart = Mage::getSingleton('checkout/session')->getQuote();
+        $helper = Mage::helper('qwqer_express/data');
+        return $helper->checkWorkingHours($cart->getStoreId());
     }
 
     /**
