@@ -49,9 +49,6 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
                         in_array($rate->getCode(), Qwqer_Express_Helper_Data::QWQER_METHODS)
                         && $address->getShippingMethod() == $rate->getCode()
                     ) {
-                        //$amountPrice = $address->getQuote()->getStore()->convertPrice($rate->getPrice(), false);
-                        //$this->_setAmount($amountPrice);
-                        //$this->_setBaseAmount($rate->getPrice());
                         /** @var $address Mage_Sales_Model_Quote_Address_Total_Shipping */
                         $shippingDescription = $rate->getCarrierTitle() . ' - ' . $rate->getMethodTitle() . ' - ' . $quote->getQwqerAddress();
                         $address->setShippingDescription(trim($shippingDescription, ' -'));
@@ -96,7 +93,6 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
     public function saveWorkingHours(Varien_Event_Observer $observer)
     {
         $data =  Mage::getSingleton('qwqer_express/api_client')->getConnection()->getTradingPointInfo();
-        var_dump($observer->getEvent()->getData());
         if(!empty($data['data']['working_hours'])) {
             Mage::getConfig()->saveConfig(Qwqer_Express_Helper_Data::API_WORKING_HOURS, json_encode($data['data']['working_hours']), 'default', 0);
         }

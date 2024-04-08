@@ -287,7 +287,7 @@ class Qwqer_Express_Helper_Data extends Mage_Core_Helper_Abstract
             return true;
         }
         $days = ['Sunday','Monday', 'Tuesday', 'Wednesday','Thursday','Friday','Saturday'];
-        $today = date("d") / 1;
+        $today = date("d") * 1;
         $dayOfWeek = $days[$today];
         $isOpen = false;
         foreach ($workingHoursArray as $workingHour) {

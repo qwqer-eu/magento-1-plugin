@@ -85,6 +85,16 @@
             </admin_system_config_changed_section_carriers>
         </events>
     </global>
+    <crontab>
+        <jobs>
+            <qwqer_working_hours>
+                <schedule><cron_expr>0 2 * * *</cron_expr></schedule>
+                <run>
+                    <model>qwqer_express/cron::execute</model>
+                </run>
+            </qwqer_working_hours>
+        </jobs>
+    </crontab>
     <frontend>
         <routers>
             <qwqer>
