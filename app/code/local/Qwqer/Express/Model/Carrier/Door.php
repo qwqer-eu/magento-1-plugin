@@ -18,11 +18,6 @@ class Qwqer_Express_Model_Carrier_Door extends Mage_Shipping_Model_Carrier_Abstr
             return $result;
         }
 
-        $available = $this->checkWorkingHours();
-        if(!$available) {
-            return $result;
-        }
-
         /* @var $result Mage_Shipping_Model_Rate_Result */
         $result->append($this->_getStandardShippingRate());
 
