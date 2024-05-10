@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Qwqer_Express>
-            <version>0.0.7</version>
+            <version>0.0.8</version>
         </Qwqer_Express>
     </modules>
     <global>
@@ -154,6 +154,9 @@
                 <shipping_cost>3</shipping_cost>
                 <sort_order>10</sort_order>
                 <sallowspecific>0</sallowspecific>
+                <sync_automatically>0</sync_automatically>
+                <calculate_shipping_price>1</calculate_shipping_price>
+                <base_shipping_cost>0</base_shipping_cost>
             </qwqer_express>
             <qwqer_door>
                 <active>1</active>
@@ -163,6 +166,9 @@
                 <shipping_cost>3</shipping_cost>
                 <sort_order>11</sort_order>
                 <sallowspecific>0</sallowspecific>
+                <sync_automatically>0</sync_automatically>
+                <calculate_shipping_price>1</calculate_shipping_price>
+                <base_shipping_cost>0</base_shipping_cost>
             </qwqer_door>
             <qwqer_parcel>
                 <active>1</active>
@@ -173,6 +179,9 @@
                 <shipping_cost>3</shipping_cost>
                 <sort_order>12</sort_order>
                 <sallowspecific>0</sallowspecific>
+                <sync_automatically>0</sync_automatically>
+                <calculate_shipping_price>1</calculate_shipping_price>
+                <base_shipping_cost>0</base_shipping_cost>
             </qwqer_parcel>
         </carriers>
     </default>

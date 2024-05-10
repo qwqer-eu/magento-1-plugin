@@ -37,7 +37,7 @@ class Qwqer_Express_AjaxController extends Mage_Core_Controller_Front_Action {
         $price = $this->getDefaultPrice($shippingMethod);
         $resultArray = [];
         $resultArray['status'] = false;
-        $resultArray['message'] = $this->__('QWQER Delivery option not available');
+        $resultArray['message'] = $this->__('QWQER Delivery option is not available');
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $location = Mage::app()->getRequest()->getParam("location");
         if ($location) {
@@ -75,6 +75,11 @@ class Qwqer_Express_AjaxController extends Mage_Core_Controller_Front_Action {
             }
         }
 
+        $calculateShipping = $this->getUseShippingCostFromQwqer($shippingMethod);
+        if (!$calculateShipping) {
+            $price = $this->getBaseShippingCost($shippingMethod);
+        }
+
         $priceHtml = Mage::helper('core')->currency($price, true, false);
         $resultArray['price'] = $priceHtml;
 
@@ -103,6 +108,33 @@ class Qwqer_Express_AjaxController extends Mage_Core_Controller_Front_Action {
             return Qwqer_Express_Helper_Data::DEFAULT_PRICE_IF_ERROR;
         }
     }
+
+    private function getBaseShippingCost($method)
+    {
+        if ($method == 'qwqer_express_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_express/base_shipping_cost');
+        } elseif ($method == 'qwqer_door_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_door/base_shipping_cost');
+        } elseif ($method == 'qwqer_parcel_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_parcel/base_shipping_cost');
+        } else {
+            return $this->getDefaultPrice($method);
+        }
+    }
+
+    private function getUseShippingCostFromQwqer($method)
+    {
+        if ($method == 'qwqer_express_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_express/calculate_shipping_price');
+        } elseif ($method == 'qwqer_door_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_door/calculate_shipping_price');
+        } elseif ($method == 'qwqer_parcel_express') {
+            return Mage::app()->getWebsite()->getConfig('carriers/qwqer_parcel/calculate_shipping_price');
+        } else {
+            return $this->getDefaultPrice($method);
+        }
+    }
+
     private function collectQuoteWithQwqer($address, $shippingMethod = false)
     {
         $quote = Mage::getSingleton('checkout/session')->getQuote();

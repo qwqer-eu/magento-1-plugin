@@ -10,22 +10,27 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
 		$order = $observer->getEvent()->getOrder();
 		$quote = $observer->getEvent()->getQuote();
         $helper = Mage::helper('qwqer_express');
+
         if (
             in_array($order->getData('shipping_method'), Qwqer_Express_Helper_Data::QWQER_METHODS)
             && $quote->getQwqerAddress()
-        ){
-			//$order->setData('shipping_description', $order->getShippingDescription() . ' - ' . $quote->getQwqerAddress());
-            $pacedOrder =  Mage::getSingleton('qwqer_express/api_client')->getConnection()->orderPlace($order, $quote);
-            if ($pacedOrder) {
-                $order->setQwqerData(json_encode($pacedOrder));
-                if (!empty($pacedOrder['data']['id'])) {
-                    $order->addStatusHistoryComment('QWQER Order Id: ' . $pacedOrder['data']['id']);
-                }
-                if(!empty($pacedOrder['errors'])) {
-                    if(isset($pacedOrder['errors']['origin.phone'])) {
-                        Mage::throwException($helper->__("The phone field contains an invalid number"));
-                    } else {
-                        Mage::throwException($helper->__("Something went wrong. Contact an administrator"));
+        ) {
+            $path = 'carriers/'.$order->getData('shipping_method').'/sync_automatically';
+            $autoSync = Mage::getStoreConfigFlag($path, $this->getStore());
+            if ($autoSync) {
+                //$order->setData('shipping_description', $order->getShippingDescription() . ' - ' . $quote->getQwqerAddress());
+                $pacedOrder =  Mage::getSingleton('qwqer_express/api_client')->getConnection()->orderPlace($order, $quote);
+                if ($pacedOrder) {
+                    $order->setQwqerData(json_encode($pacedOrder));
+                    if (!empty($pacedOrder['data']['id'])) {
+                        $order->addStatusHistoryComment('QWQER Order Id: ' . $pacedOrder['data']['id']);
+                    }
+                    if(!empty($pacedOrder['errors'])) {
+                        if(isset($pacedOrder['errors']['origin.phone'])) {
+                            Mage::throwException($helper->__("The phone field contains an invalid number"));
+                        } else {
+                            Mage::throwException($helper->__("Something went wrong. Contact an administrator"));
+                        }
                     }
                 }
             }
@@ -74,7 +79,7 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
                         $url = "https://qwqer.hostcream.eu/storage/delivery-order-covers/" . $qwqerDataArray['data']['id'] . ".pdf";
                         $blank = "_blank";
                         $block->addButton('print_label_qwqer', array(
-                            'label' => Mage::helper('qwqer_express')->__('Print Label'),
+                            'label' => Mage::helper('qwqer_express')->__('Print QWQER Label'),
                             'onclick' => 'window.open(\'' . $url . '\', \'' . $blank . '\')',
                             'class' => 'go'
                         ));
@@ -82,6 +87,13 @@ class Qwqer_Express_Model_Observer extends Mage_Core_Model_Abstract {
                 } catch (\Exception $exception) {
                     //skip button
                 }
+            } else {
+                $url = Mage::helper('adminhtml')->getUrl('adminhtml/adminhtml_qwqer/sync/id/'.$block->getOrder()->getId());
+                $block->addButton('sync_qwqer', array(
+                    'label' => Mage::helper('qwqer_express')->__('Sync to QWQER'),
+                    'onclick' => 'setLocation(\'' . $url . '\')',
+                    'class' => 'go'
+                ));
             }
         }
     }

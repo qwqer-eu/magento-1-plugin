@@ -93,7 +93,8 @@ class Qwqer_Express_Model_Carrier_Express extends Mage_Shipping_Model_Carrier_Ab
     public function calculatePrice($address, $qwqerMethod = null)
     {
         $price = $this->getConfigData('shipping_cost');
-        if ($address) {
+        $calculatePrice = $this->getConfigData('calculate_shipping_price');
+        if ($address && $calculatePrice) {
             if ($qwqerMethod && $qwqerMethod !== "qwqer_express_express")
             {
                 return (float) $price;
@@ -110,7 +111,8 @@ class Qwqer_Express_Model_Carrier_Express extends Mage_Shipping_Model_Carrier_Ab
                     $price = $result['data']['client_price'] / 100;
                 }
             }
-
+        } elseif (!$calculatePrice) {
+            $price = $this->getConfigData('base_shipping_cost');
         }
         return (float) $price;
     }
